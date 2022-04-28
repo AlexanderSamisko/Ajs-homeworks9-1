@@ -18,71 +18,40 @@ test('testing whether RangeHeavyHitter with params could be created (wrong occup
   expect(() => new RangeHeavyHitter('Merlin', 'Range-Heavy-Hitter', 'Bowerman')).toThrow('Класс персонажа не соответсвует типу!');
 });
 
-test('testing whether instance can have an ailment (existed one)', () => {
+test('testing whether instance can be stoned', () => {
   const Lilith = new RangeHeavyHitter('Lilith', 'Range-Heavy-Hitter', 'Daemon');
-  Lilith.getAilments('Cursed');
-  expect(Lilith.ailments.get('Cursed')).toBe(true);
+  Lilith.stoned = true;
+  expect(Lilith.stoned).toBe(true);
 });
 
-test('testing whether instance can have an ailment (unexisted one)', () => {
+test('testing whether stoned can be called with wrong param', () => {
   const Lilith = new RangeHeavyHitter('Lilith', 'Range-Heavy-Hitter', 'Daemon');
   expect(() => {
-    Lilith.getAilments('Bleeding');
-  }).toThrow('В этом мире нет такого недуга!');
-});
-
-test('testing whether instance can have more than one an ailment (ones that exists)', () => {
-  const Lilith = new RangeHeavyHitter('Lilith', 'Range-Heavy-Hitter', 'Daemon');
-  Lilith.getAilments('Cursed');
-  Lilith.getAilments('Stoned');
-  const truth = [
-    Lilith.ailments.get('Cursed'),
-    Lilith.ailments.get('Stoned'),
-  ];
-  expect(truth).toStrictEqual([true, true]);
+    Lilith.stoned = 'возможно';
+  }).toThrow('Или true или никак!');
 });
 
 test('testing whether RangeHeavyHitter actually can do any damage within range', () => {
   const Lilith = new RangeHeavyHitter('Lilith', 'Range-Heavy-Hitter', 'Daemon');
-  const clearDamage = Lilith.doDamage(2);
-  expect(clearDamage).toBe(36);
+  Lilith.damage = 2;
+  expect(Lilith.damage).toBe(36);
 });
 
 test('testing whether RangeHeavyHitter actually can do any damage to the target out of the range (check value)', () => {
   const Lilith = new RangeHeavyHitter('Lilith', 'Range-Heavy-Hitter', 'Daemon');
-  const clearDamage = Lilith.doDamage(6);
-  expect(clearDamage).toBe(0);
-});
-
-test('testing whether RangeHeavyHitter actually can do any damage to the target out of the range(check message)', () => {
-  const Lilith = new RangeHeavyHitter('Lilith', 'Range-Heavy-Hitter', 'Daemon');
-  const logSpy = jest.spyOn(console, 'log');
-  Lilith.doDamage(6);
-  expect(logSpy).toHaveBeenCalledWith('Недолет!');
+  Lilith.damage = 6;
+  expect(Lilith.damage).toBe(0);
 });
 
 test('testing whether RangeHeavyHitter actually can do any damage on the same place (check value)', () => {
   const Lilith = new RangeHeavyHitter('Lilith', 'Range-Heavy-Hitter', 'Daemon');
-  const clearDamage = Lilith.doDamage(0);
-  expect(clearDamage).toBe(0);
-});
-
-test('testing whether RangeHeavyHitter actually can do any damage on the same place (check effect)', () => {
-  const Lilith = new RangeHeavyHitter('Lilith', 'Range-Heavy-Hitter', 'Daemon');
-  Lilith.doDamage(0);
-  expect(Lilith.health).toBe(0);
-});
-
-test('testing whether RangeHeavyHitter actually can do any damage on the same place (check message)', () => {
-  const Lilith = new RangeHeavyHitter('Lilith', 'Range-Heavy-Hitter', 'Daemon');
-  const logSpy = jest.spyOn(console, 'log');
-  Lilith.doDamage(0);
-  expect(logSpy).toHaveBeenCalledWith('Персонаж совершил суицид ударив в себя!');
+  Lilith.damage = 0;
+  expect(Lilith.damage).toBe(0);
 });
 
 test('testing damage that RangeHeavyHitter actually can do while been stoned', () => {
   const Lilith = new RangeHeavyHitter('Lilith', 'Range-Heavy-Hitter', 'Daemon');
-  Lilith.getAilments('Stoned');
-  const clearDamage = Lilith.doDamage(2);
-  expect(clearDamage).toBe(31);
+  Lilith.stoned = true;
+  Lilith.damage = 2;
+  expect(Lilith.damage).toBe(31);
 });

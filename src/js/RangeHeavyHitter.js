@@ -13,42 +13,37 @@ export default class RangeHeavyHitter extends Character {
     }
   }
 
-  getAilments(ailment) {
-    if (RangeHeavyHitter.ailmentBar.includes(ailment)) {
-      if (this.ailments) {
-        this.ailments.set(ailment, true);
-      } else {
-        this.ailments = new Map([[ailment, true]]);
-      }
+  get stoned() {
+    return this.hasstoned;
+  }
+
+  set stoned(value) {
+    if (value === true) {
+      this.hasstoned = value;
     } else {
-      throw new Error('В этом мире нет такого недуга!');
+      throw new Error('Или true или никак!');
     }
   }
 
-  doDamage(range) {
+  get damage() {
+    return this.scaledDamage;
+  }
+
+
+  set damage(range) {
     if (range <= this.range && range > 0) {
-      if (this.ailments && this.ailments.get('Stoned')) {
-        return Math.floor((this.attack - Math.log2(range) * 5) * (11 - range) / 10);
+      if (this.hasstoned) {
+        this.scaledDamage = Math.floor((this.attack - Math.log2(range) * 5) * (11 - range) / 10);
+      } else {
+        this.scaledDamage = Math.floor(this.attack * (11 - range) / 10);
       }
-      return Math.floor(this.attack * (11 - range) / 10);
-    } if (range >= this.range) {
-      console.log('Недолет!');
-      return 0;
+    } else {
+      this.scaledDamage = 0;
     }
-    console.log('Персонаж совершил суицид ударив в себя!');
-    this.health = 0;
-    return 0;
   }
 }
 
 RangeHeavyHitter.occupations = [
   'Daemon',
   'Magician',
-];
-
-RangeHeavyHitter.ailmentBar = [
-  'Stoned',
-  'Cursed',
-  'Scared',
-  'Silence',
 ];

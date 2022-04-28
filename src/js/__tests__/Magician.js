@@ -14,71 +14,40 @@ test('testing whether Magician with params could be created', () => {
   });
 });
 
-test('testing whether instance can have an ailment (existed one)', () => {
+test('testing whether instance can be stoned', () => {
   const Merlin = new Magician('Merlin');
-  Merlin.getAilments('Cursed');
-  expect(Merlin.ailments.get('Cursed')).toBe(true);
+  Merlin.stoned = true;
+  expect(Merlin.stoned).toBe(true);
 });
 
-test('testing whether instance can have an ailment (unexisted one)', () => {
+test('testing whether stoned can be called with wrong param', () => {
   const Merlin = new Magician('Merlin');
   expect(() => {
-    Merlin.getAilments('Bleeding');
-  }).toThrow('В этом мире нет такого недуга!');
-});
-
-test('testing whether instance can have more than one an ailment (ones that exists)', () => {
-  const Merlin = new Magician('Merlin');
-  Merlin.getAilments('Cursed');
-  Merlin.getAilments('Stoned');
-  const truth = [
-    Merlin.ailments.get('Cursed'),
-    Merlin.ailments.get('Stoned'),
-  ];
-  expect(truth).toStrictEqual([true, true]);
+    Merlin.stoned = 'возможно';
+  }).toThrow('Или true или никак!');
 });
 
 test('testing whether Magician actually can do any damage within range', () => {
   const Merlin = new Magician('Merlin');
-  const clearDamage = Merlin.doDamage(2);
-  expect(clearDamage).toBe(36);
+  Merlin.damage = 2;
+  expect(Merlin.damage).toBe(36);
 });
 
 test('testing whether Magician actually can do any damage to the target out of the range (check value)', () => {
   const Merlin = new Magician('Merlin');
-  const clearDamage = Merlin.doDamage(6);
-  expect(clearDamage).toBe(0);
-});
-
-test('testing whether Magician actually can do any damage to the target out of the range(check message)', () => {
-  const Merlin = new Magician('Merlin');
-  const logSpy = jest.spyOn(console, 'log');
-  Merlin.doDamage(6);
-  expect(logSpy).toHaveBeenCalledWith('Недолет!');
+  Merlin.damage = 6;
+  expect(Merlin.damage).toBe(0);
 });
 
 test('testing whether Magician actually can do any damage on the same place (check value)', () => {
   const Merlin = new Magician('Merlin');
-  const clearDamage = Merlin.doDamage(0);
-  expect(clearDamage).toBe(0);
-});
-
-test('testing whether Magician actually can do any damage on the same place (check effect)', () => {
-  const Merlin = new Magician('Merlin');
-  Merlin.doDamage(0);
-  expect(Merlin.health).toBe(0);
-});
-
-test('testing whether Magician actually can do any damage on the same place (check message)', () => {
-  const Merlin = new Magician('Merlin');
-  const logSpy = jest.spyOn(console, 'log');
-  Merlin.doDamage(0);
-  expect(logSpy).toHaveBeenCalledWith('Персонаж совершил суицид ударив в себя!');
+  Merlin.damage = 0;
+  expect(Merlin.damage).toBe(0);
 });
 
 test('testing damage that Magician actually can do while been stoned', () => {
   const Merlin = new Magician('Merlin');
-  Merlin.getAilments('Stoned');
-  const clearDamage = Merlin.doDamage(2);
-  expect(clearDamage).toBe(31);
+  Merlin.stoned = true;
+  Merlin.damage = 2;
+  expect(Merlin.damage).toBe(31);
 });
