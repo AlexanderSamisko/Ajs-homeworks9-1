@@ -18,10 +18,10 @@ export default class RangeHeavyHitter extends Character {
   }
 
   set stoned(value) {
-    if (value === true) {
+    if (value === true || value === false) {
       this.hasstoned = value;
     } else {
-      throw new Error('Или true или никак!');
+      throw new Error('Или true или false');
     }
   }
 

@@ -24,11 +24,18 @@ test('testing whether instance can be stoned', () => {
   expect(Lilith.stoned).toBe(true);
 });
 
+test('testing whether instance can be unstoned', () => {
+  const Lilith = new RangeHeavyHitter('Lilith', 'Range-Heavy-Hitter', 'Daemon');
+  Lilith.stoned = true;
+  Lilith.stoned = false;
+  expect(Lilith.stoned).toBe(false);
+});
+
 test('testing whether stoned can be called with wrong param', () => {
   const Lilith = new RangeHeavyHitter('Lilith', 'Range-Heavy-Hitter', 'Daemon');
   expect(() => {
     Lilith.stoned = 'возможно';
-  }).toThrow('Или true или никак!');
+  }).toThrow('Или true или false');
 });
 
 test('testing whether RangeHeavyHitter actually can do any damage within range', () => {

@@ -20,11 +20,19 @@ test('testing whether instance can be stoned', () => {
   expect(Merlin.stoned).toBe(true);
 });
 
+test('testing whether instance can be unstoned', () => {
+  const Merlin = new Magician('Merlin');
+  Merlin.stoned = true;
+  Merlin.stoned = false;
+  expect(Merlin.stoned).toBe(false);
+});
+
+
 test('testing whether stoned can be called with wrong param', () => {
   const Merlin = new Magician('Merlin');
   expect(() => {
     Merlin.stoned = 'возможно';
-  }).toThrow('Или true или никак!');
+  }).toThrow('Или true или false');
 });
 
 test('testing whether Magician actually can do any damage within range', () => {
